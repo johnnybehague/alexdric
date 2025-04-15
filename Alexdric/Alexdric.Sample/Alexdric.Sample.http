@@ -1,0 +1,6 @@
+@Alexdric.Sample_HostAddress = http://localhost:5016
+
+GET {{Alexdric.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
