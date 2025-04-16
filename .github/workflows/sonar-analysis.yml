@@ -1,0 +1,40 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build-and-analyze:
+    name: Build, Test & Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🧰 Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: 🔧 Install dotnet-sonarscanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: 🚀 Start SonarQube scan
+        run: >
+          dotnet sonarscanner begin
+          /k:"johnnybehague_alexdric"
+          /d:sonar.host.url="${{ https://sonarcloud.io }}"
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+
+      - name: 🧪 Run tests with coverage
+        run: dotnet test --collect:"XPlat Code Coverage"
+
+      - name: 📤 End SonarQube scan
+        run: >
+          dotnet sonarscanner end
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
