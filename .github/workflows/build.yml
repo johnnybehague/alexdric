@@ -40,12 +40,25 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      
+
+      - name: Install dotnet-coverage tool
+        run: dotnet tool install --global dotnet-coverage
+
       - name: Start SonarQube scan
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"johnnybehague_alexdric" /o:"johnnybehague" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+          .\.sonar\scanner\dotnet-sonarscanner begin `
+          /k:"johnnybehague_alexdric" `
+          /o:"johnnybehague" `
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+          /d:sonar.host.url="https://sonarcloud.io" `
+          /d:sonar.cs.opencover.reportsPaths="coverage.cobertura.xml"
+
       - name: Run tests with coverage
-        run: dotnet test .\Alexdric\Alexdric.sln --collect:"XPlat Code Coverage"
+        run: |
+          dotnet-coverage collect `
+          --output "coverage.cobertura.xml" `
+          --format cobertura `
+          -- dotnet test .\Alexdric\Alexdric.sln --no-build --configuration Release
 
       - name: End SonarQube scan
         run: |
