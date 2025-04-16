@@ -42,7 +42,7 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       
       - name: Start SonarQube scan
-        run: |
+        run: >
           .\.sonar\scanner\dotnet-sonarscanner begin 
           /k:"johnnybehague_alexdric"
           /o:"johnnybehague"
@@ -55,7 +55,7 @@ jobs:
         run: dotnet test .\Alexdric\Alexdric.sln --collect:"XPlat Code Coverage"
 
       - name: End SonarQube scan
-        run: |
+        run: >
           .\.sonar\scanner\dotnet-sonarscanner end 
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           
