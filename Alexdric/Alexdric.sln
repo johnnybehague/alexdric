@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alexdric", "Alexdric\Alexdr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alexdric.Sample", "Alexdric.Sample\Alexdric.Sample.csproj", "{2BE4A7F1-D706-4F1C-9FE3-B62A294A2284}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alexdric.Tests", "Alexdric.Tests\Alexdric.Tests.csproj", "{7AB698E9-8E6C-41D4-B7BB-EF0EF652F7F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2BE4A7F1-D706-4F1C-9FE3-B62A294A2284}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BE4A7F1-D706-4F1C-9FE3-B62A294A2284}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BE4A7F1-D706-4F1C-9FE3-B62A294A2284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AB698E9-8E6C-41D4-B7BB-EF0EF652F7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AB698E9-8E6C-41D4-B7BB-EF0EF652F7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AB698E9-8E6C-41D4-B7BB-EF0EF652F7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AB698E9-8E6C-41D4-B7BB-EF0EF652F7F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
