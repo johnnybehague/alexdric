@@ -41,7 +41,7 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       
-      - name: 🚀 Start SonarQube scan
+      - name: Start SonarQube scan
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin 
           /k:"johnnybehague_alexdric"
@@ -51,10 +51,10 @@ jobs:
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
 
-      - name: 🧪 Run tests with coverage
+      - name: Run tests with coverage
         run: dotnet test .\Alexdric\Alexdric.sln --collect:"XPlat Code Coverage"
 
-      - name: 📤 End SonarQube scan
+      - name: End SonarQube scan
         run: |
           .\.sonar\scanner\dotnet-sonarscanner end 
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
