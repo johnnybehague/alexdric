@@ -18,46 +18,10 @@ public class LoggingBehaviourTests
         public string Reply { get; set; } = "Hi!";
     }
 
-    //[TestMethod]
-    //public async Task Handle_LogsRequestAndResponse_CallsNextAndReturnsResponse()
-    //{
-    //    // Arrange
-    //    var loggerMock = new Mock<ILogger<LoggingBehaviour<TestRequest, TestResponse>>>();
-    //    var loggingBehaviour = new LoggingBehaviour<TestRequest, TestResponse>(loggerMock.Object);
-
-    //    var request = new TestRequest { Message = "Ping" };
-    //    var response = new TestResponse { Reply = "Pong" };
-
-    //    var nextMock = new Mock<RequestHandlerDelegate<TestResponse>>();
-    //    nextMock.Setup(x => x(It.IsAny<CancellationToken>())).ReturnsAsync(response);
-
-    //    // Act
-    //    var result = await loggingBehaviour.Handle(request, nextMock.Object, CancellationToken.None);
-
-    //    // Assert
-    //    Assert.AreEqual(response, result);
-
-    //    loggerMock.Verify(
-    //        l => l.Log(
-    //            LogLevel.Information,
-    //            It.IsAny<EventId>(),
-    //            It.Is<It.IsAnyType>((o, _) => o.ToString()!.Contains("Clean Architecture Request Handling")),
-    //            null,
-    //            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-    //        Times.Once);
-
-    //    loggerMock.Verify(
-    //        l => l.Log(
-    //            LogLevel.Information,
-    //            It.IsAny<EventId>(),
-    //            It.Is<It.IsAnyType>((o, _) => o.ToString()!.Contains("Clean Architecture Response Handling")),
-    //            null,
-    //            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-    //        Times.Once);
-    //}
+    #region Constructor Tests
 
     [TestMethod]
-    public void Constructor_WithValidLogger_ShouldNotThrow()
+    public void Constructor_ShouldReturnsNewLoggingBehaviour_WhenLoggerIsNotNull()
     {
         // Arrange
         var loggerMock = new Mock<ILogger<LoggingBehaviour<TestRequest, TestResponse>>>();
@@ -70,7 +34,7 @@ public class LoggingBehaviourTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void Constructor_WithNullLogger_ShouldThrowArgumentNullException()
+    public void Constructor_ShouldThrowArgumentNullException_WhenLoggerIsNull()
     {
         // Arrange
         ILogger<LoggingBehaviour<TestRequest, TestResponse>> nullLogger = null;
@@ -80,6 +44,10 @@ public class LoggingBehaviourTests
 
         // Assert -> via ExpectedException
     }
+
+    #endregion
+
+    #region Handle Tests
 
     [TestMethod]
     public async Task Handle_ShouldReturnsResponse()
@@ -137,41 +105,5 @@ public class LoggingBehaviourTests
             Times.Once);
     }
 
-    //[Fact]
-    //public async Task Handle_LogsRequestAndResponse_CallsNextAndReturnsResponse()
-    //{
-    //    // Arrange
-    //    var loggerMock = new Mock<ILogger<LoggingBehaviour<TestRequest, TestResponse>>>();
-    //    var loggingBehaviour = new LoggingBehaviour<TestRequest, TestResponse>(loggerMock.Object);
-
-    //    var request = new TestRequest { Message = "Ping" };
-    //    var response = new TestResponse { Reply = "Pong" };
-
-    //    var nextMock = new Mock<RequestHandlerDelegate<TestResponse>>();
-    //    nextMock.Setup(n => n()).ReturnsAsync(response);
-
-    //    // Act
-    //    var result = await loggingBehaviour.Handle(request, nextMock.Object, CancellationToken.None);
-
-    //    // Assert
-    //    Assert.Equal(response, result);
-
-    //    loggerMock.Verify(
-    //        l => l.Log(
-    //            LogLevel.Information,
-    //            It.IsAny<EventId>(),
-    //            It.Is<It.IsAnyType>((o, _) => o.ToString()!.Contains("Clean Architecture Request Handling")),
-    //            null,
-    //            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-    //        Times.Once);
-
-    //    loggerMock.Verify(
-    //        l => l.Log(
-    //            LogLevel.Information,
-    //            It.IsAny<EventId>(),
-    //            It.Is<It.IsAnyType>((o, _) => o.ToString()!.Contains("Clean Architecture Response Handling")),
-    //            null,
-    //            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-    //        Times.Once);
-    //}
+    #endregion
 }
