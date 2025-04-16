@@ -51,14 +51,15 @@ jobs:
           /o:"johnnybehague" `
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
           /d:sonar.host.url="https://sonarcloud.io" `
-          /d:sonar.cs.opencover.reportsPaths="coverage.cobertura.xml"
+          /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
+
+      - name: Build
+        run: |
+          dotnet build --no-incremental
 
       - name: Run tests with coverage
         run: |
-          dotnet-coverage collect `
-          --output "coverage.cobertura.xml" `
-          --format cobertura `
-          -- dotnet test .\Alexdric\Alexdric.sln --no-build --configuration Release
+          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 
       - name: End SonarQube scan
         run: |
