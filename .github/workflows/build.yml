@@ -42,20 +42,13 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       
       - name: Start SonarQube scan
-        run: >
-          .\.sonar\scanner\dotnet-sonarscanner begin 
-          /k:"johnnybehague_alexdric"
-          /o:"johnnybehague"
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"  
-          /d:sonar.host.url="${{ https://sonarcloud.io }}"
-          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-          /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"johnnybehague_alexdric" /o:"johnnybehague" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ https://sonarcloud.io }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
 
       - name: Run tests with coverage
         run: dotnet test .\Alexdric\Alexdric.sln --collect:"XPlat Code Coverage"
 
       - name: End SonarQube scan
-        run: >
-          .\.sonar\scanner\dotnet-sonarscanner end 
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           
