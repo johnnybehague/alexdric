@@ -43,7 +43,7 @@ jobs:
       
       - name: Start SonarQube scan
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"johnnybehague_alexdric" /o:"johnnybehague" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ https://sonarcloud.io }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"johnnybehague_alexdric" /o:"johnnybehague" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
       - name: Run tests with coverage
         run: dotnet test .\Alexdric\Alexdric.sln --collect:"XPlat Code Coverage"
 
