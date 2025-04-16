@@ -20,7 +20,7 @@ namespace Alexdric.Sample.Application.Queries.WeatherForecasts.GetAllWeatherFore
 
         public async Task<BaseResponse<IEnumerable<WeatherForecastDto>>> Handle(GetAllWeatherForecastQuery request, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<IEnumerable<WeatherForecastDto>>();
+            BaseResponse<IEnumerable<WeatherForecastDto>> response;
 
             try
             {
