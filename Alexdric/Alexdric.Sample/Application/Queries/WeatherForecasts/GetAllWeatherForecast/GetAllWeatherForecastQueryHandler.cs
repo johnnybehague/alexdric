@@ -6,33 +6,32 @@ using Alexdric.Sample.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 
-namespace Alexdric.Sample.Application.Queries.WeatherForecasts.GetAllWeatherForecast
+namespace Alexdric.Sample.Application.Queries.WeatherForecasts.GetAllWeatherForecast;
+
+public class GetAllWeatherForecastQueryHandler : BaseQueryHandler<WeatherForecastEntity, WeatherForecastDto>,
+    IRequestHandler<GetAllWeatherForecastQuery, BaseResponse<IEnumerable<WeatherForecastDto>>>
 {
-    public class GetAllWeatherForecastQueryHandler : BaseQueryHandler<WeatherForecastEntity, WeatherForecastDto>,
-        IRequestHandler<GetAllWeatherForecastQuery, BaseResponse<IEnumerable<WeatherForecastDto>>>
+    private readonly IWeatherForecastRepository _weatherForecastRepository;
+
+    public GetAllWeatherForecastQueryHandler(IWeatherForecastRepository weatherForecastRepository, IMapper mapper) : base(mapper)
     {
-        private readonly IWeatherForecastRepository _weatherForecastRepository;
+        _weatherForecastRepository = weatherForecastRepository ?? throw new ArgumentNullException(nameof(weatherForecastRepository));
+    }
 
-        public GetAllWeatherForecastQueryHandler(IWeatherForecastRepository weatherForecastRepository, IMapper mapper) : base(mapper)
+    public async Task<BaseResponse<IEnumerable<WeatherForecastDto>>> Handle(GetAllWeatherForecastQuery request, CancellationToken cancellationToken)
+    {
+        BaseResponse<IEnumerable<WeatherForecastDto>> response;
+
+        try
         {
-            _weatherForecastRepository = weatherForecastRepository ?? throw new ArgumentNullException(nameof(weatherForecastRepository));
+            var entities = await _weatherForecastRepository.GetAllWeatherForecastAsync();
+            response = GetIEnumerableSuccessResponse(entities);
+        }
+        catch (Exception ex)
+        {
+            response = GetIEnumerableErrorResponse(ex);
         }
 
-        public async Task<BaseResponse<IEnumerable<WeatherForecastDto>>> Handle(GetAllWeatherForecastQuery request, CancellationToken cancellationToken)
-        {
-            BaseResponse<IEnumerable<WeatherForecastDto>> response;
-
-            try
-            {
-                var entities = await _weatherForecastRepository.GetAllWeatherForecastAsync();
-                response = GetIEnumerableSuccessResponse(entities);
-            }
-            catch (Exception ex)
-            {
-                response = GetIEnumerableErrorResponse(ex);
-            }
-
-            return response;
-        }
+        return response;
     }
 }
