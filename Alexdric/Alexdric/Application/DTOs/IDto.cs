@@ -1,3 +1,3 @@
 ﻿namespace Alexdric.Application.DTOs;
 
-public record BaseDto;
+public interface IDto { }

@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - develop
+      - test/**
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -51,7 +52,8 @@ jobs:
           /o:"johnnybehague" `
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
           /d:sonar.host.url="https://sonarcloud.io" `
-          /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
+          /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml" `
+          /d:sonar.exclusions="**/Tests/**,**/*.Tests.cs"
 
       - name: Build
         run: |

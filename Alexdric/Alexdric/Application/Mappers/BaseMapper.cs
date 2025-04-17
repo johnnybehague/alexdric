@@ -5,8 +5,8 @@ using AutoMapper;
 namespace Alexdric.Application.Mappers;
 
 public class BaseMapper<TEntity, TDto> : Profile 
-    where TEntity : BaseEntity
-    where TDto : BaseDto
+    where TEntity : IEntity
+    where TDto : IDto
 {
     public BaseMapper()
     {

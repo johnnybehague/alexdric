@@ -8,18 +8,18 @@ namespace Alexdric.Application.Behaviours;
 public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
     private readonly Stopwatch _timer;
-    private readonly ILogger<TRequest> _logger;
+    private readonly ILogger<PerformanceBehaviour<TRequest, TResponse>> _logger;
 
-    public PerformanceBehaviour(ILogger<TRequest> logger)
+    public PerformanceBehaviour(ILogger<PerformanceBehaviour<TRequest, TResponse>> logger)
     {
-        _timer = new Stopwatch() ?? throw new ArgumentNullException(nameof(Stopwatch));
+        _timer = new Stopwatch();
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _timer.Start();
-        var response = await next();
+        var response = await next(cancellationToken);
         _timer.Stop();
 
         var elapsedMilliseconds = _timer.ElapsedMilliseconds;
