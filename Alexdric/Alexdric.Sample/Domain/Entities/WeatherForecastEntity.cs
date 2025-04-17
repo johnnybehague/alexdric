@@ -2,7 +2,7 @@
 
 namespace Alexdric.Sample.Domain.Entities;
 
-public record WeatherForecastEntity : BaseEntity
+public record WeatherForecastEntity : IEntity
 {
     public int Id { get; set; }
 

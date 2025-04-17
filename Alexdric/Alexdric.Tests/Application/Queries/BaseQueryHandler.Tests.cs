@@ -11,9 +11,9 @@ public class BaseQueryHandlerTests
 {
     #region Test Classes
 
-    public record SampleEntity(string Name) : BaseEntity;
+    public record SampleEntity(string Name) : IEntity;
 
-    public record SampleDto(string Name) : BaseDto;
+    public record SampleDto(string Name) : IDto;
 
     #endregion
 

@@ -82,6 +82,6 @@ public class WeatherForecastEntityTests
         var entity = new WeatherForecastEntity();
 
         // Act & Assert
-        Assert.IsInstanceOfType(entity, typeof(BaseEntity));
+        Assert.IsInstanceOfType(entity, typeof(IEntity));
     }
 }

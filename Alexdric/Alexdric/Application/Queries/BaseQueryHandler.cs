@@ -5,8 +5,8 @@ using AutoMapper;
 namespace Alexdric.Application.Queries;
 
 public class BaseQueryHandler<TEntity, TDto>
-    where TEntity: BaseEntity
-    where TDto: BaseDto
+    where TEntity: IEntity
+    where TDto: IDto
 {
     private readonly IMapper _mapper;
 

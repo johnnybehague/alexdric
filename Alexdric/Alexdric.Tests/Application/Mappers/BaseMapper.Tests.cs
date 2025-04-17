@@ -10,9 +10,9 @@ public class BaseMapperTests
 {
     #region Test Classes
 
-    public record PersonEntity(string Name, int Age) : BaseEntity;
+    public record PersonEntity(string Name, int Age) : IEntity;
 
-    public record PersonDto(string Name, int Age) : BaseDto;
+    public record PersonDto(string Name, int Age) : IDto;
 
     #endregion
 

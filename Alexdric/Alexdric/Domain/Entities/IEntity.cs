@@ -1,3 +1,3 @@
 ﻿namespace Alexdric.Domain.Entities;
 
-public record BaseEntity;
+public interface IEntity { }

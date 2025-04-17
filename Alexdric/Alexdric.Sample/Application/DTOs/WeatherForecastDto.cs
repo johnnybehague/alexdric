@@ -2,7 +2,7 @@
 
 namespace Alexdric.Sample.Application.DTOs;
 
-public record WeatherForecastDto : BaseDto
+public record WeatherForecastDto : IDto
 {
     public int Id { get; set; }
 
