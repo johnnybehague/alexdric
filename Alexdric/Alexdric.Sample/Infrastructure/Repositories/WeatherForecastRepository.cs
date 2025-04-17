@@ -21,6 +21,7 @@ public class WeatherForecastRepository : IWeatherForecastRepository
 
     public async Task<WeatherForecastEntity> GetByIdWeatherForecastAsync(int id)
     {
-        return await _context.WeatherForecasts.FirstAsync(x => x.Id == id);
+        var entities = await _context.WeatherForecasts.ToListAsync();
+        return entities.First(x => x.Id == id);
     }
 }

@@ -2,6 +2,7 @@
 using Alexdric.Sample.API.Controllers;
 using Alexdric.Sample.Application.DTOs;
 using Alexdric.Sample.Application.Queries.WeatherForecasts.GetAllWeatherForecast;
+using Alexdric.Sample.Application.Queries.WeatherForecasts.GetByIdWeatherForecast;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -79,6 +80,60 @@ public class WeatherForecastControllerTests
         var response = badRequestResult.Value as BaseResponse<IEnumerable<WeatherForecastDto>>;
         Assert.IsFalse(response.Succcess);
         Assert.AreEqual("Failed to get weather data", response.Message);
+    }
+
+    #endregion
+
+    #region GetByIdAsync Tests
+
+    [TestMethod]
+    public async Task GetByIdAsync_ShouldReturnOk_WhenResponseIsSuccess()
+    {
+        // Arrange
+        int id = 1;
+        var expectedResponse = new BaseResponse<WeatherForecastDto>
+        {
+            Succcess = true,
+            Data = new WeatherForecastDto { Id = id, Summary = "Sunny" }
+        };
+
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<GetByIdWeatherForecastQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _controller.GetByIdAsync(id);
+
+        // Assert
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        Assert.AreEqual(200, okResult.StatusCode);
+        Assert.AreEqual(expectedResponse, okResult.Value);
+    }
+
+    [TestMethod]
+    public async Task GetByIdAsync_ShouldReturnBadRequest_WhenResponseIsNotSuccess()
+    {
+        // Arrange
+        int id = 2;
+        var expectedResponse = new BaseResponse<WeatherForecastDto>
+        {
+            Succcess = false,
+            Message = "Not found"
+        };
+
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<GetByIdWeatherForecastQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _controller.GetByIdAsync(id);
+
+        // Assert
+        var badRequestResult = result as BadRequestObjectResult;
+        Assert.IsNotNull(badRequestResult);
+        Assert.AreEqual(400, badRequestResult.StatusCode);
+        Assert.AreEqual(expectedResponse, badRequestResult.Value);
     }
 
     #endregion
