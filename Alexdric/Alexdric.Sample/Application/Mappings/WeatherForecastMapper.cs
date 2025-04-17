@@ -20,7 +20,7 @@ public class WeatherForecastMapper : BaseMapper<WeatherForecastEntity, WeatherFo
             .ForMember(entity => entity.Date, dto => dto.MapFrom(x => x.Date.ToString(new CultureInfo("fr-FR"))));
     }
 
-    public DateOnly MapDateOnly(string date) // A déplacer dans une autre classe
+    public static DateOnly MapDateOnly(string date)
     {
         return DateOnly.TryParse(date, new CultureInfo("fr-FR"), DateTimeStyles.None, out DateOnly parsedDate) ? parsedDate: DateOnly.MinValue;
     }

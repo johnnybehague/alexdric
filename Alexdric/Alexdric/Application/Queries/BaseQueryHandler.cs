@@ -17,8 +17,7 @@ public class BaseQueryHandler<TEntity, TDto>
 
     public BaseResponse<TDto> GetSuccessResponse(TEntity entity)
     {
-        if (entity is null)
-            throw new ArgumentNullException(nameof(entity));
+        ArgumentNullException.ThrowIfNull(entity);
 
         return new BaseResponse<TDto>()
         {
@@ -30,8 +29,7 @@ public class BaseQueryHandler<TEntity, TDto>
 
     public BaseResponse<IEnumerable<TDto>> GetIEnumerableSuccessResponse(IEnumerable<TEntity> entities)
     {
-        if (entities is null)
-            throw new ArgumentNullException(nameof(entities));
+        ArgumentNullException.ThrowIfNull(entities);
 
         return new BaseResponse<IEnumerable<TDto>>()
         {

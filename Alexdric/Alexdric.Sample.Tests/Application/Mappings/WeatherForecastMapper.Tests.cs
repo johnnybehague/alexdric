@@ -109,11 +109,6 @@ public class WeatherForecastMapperTests
 
     #region MapDateOnly Tests
 
-    public DateOnly MapDateOnly(string date) // A déplacer dans une autre classe
-    {
-        return DateOnly.TryParse(date, new CultureInfo("fr-FR"), DateTimeStyles.None, out DateOnly parsedDate) ? parsedDate : DateOnly.MinValue;
-    }
-
     [TestMethod]
     public void MapDateOnly_ValidFrenchDate_ReturnsParsedDate()
     {
@@ -121,7 +116,7 @@ public class WeatherForecastMapperTests
         var input = "16/04/2025";
 
         // Act
-        var result = MapDateOnly(input);
+        var result = WeatherForecastMapper.MapDateOnly(input);
 
         // Assert
         var expected = new DateOnly(2025, 4, 16);
@@ -135,7 +130,7 @@ public class WeatherForecastMapperTests
         var input = "";
 
         // Act
-        var result = MapDateOnly(input);
+        var result = WeatherForecastMapper.MapDateOnly(input);
 
         // Assert
         Assert.AreEqual(DateOnly.MinValue, result);
@@ -148,7 +143,7 @@ public class WeatherForecastMapperTests
         var input = "2025-04-16"; // ISO format, not fr-FR
 
         // Act
-        var result = MapDateOnly(input);
+        var result = WeatherForecastMapper.MapDateOnly(input);
 
         // Assert
         Assert.AreEqual(new DateOnly(2025, 4, 16), result);
@@ -161,7 +156,7 @@ public class WeatherForecastMapperTests
         var input = "invalid-date";
 
         // Act
-        var result = MapDateOnly(input);
+        var result = WeatherForecastMapper.MapDateOnly(input);
 
         // Assert
         Assert.AreEqual(DateOnly.MinValue, result);
