@@ -84,4 +84,14 @@ public class WeatherForecastEntityTests
         // Act & Assert
         Assert.IsInstanceOfType(entity, typeof(IEntity));
     }
+
+    [TestMethod]
+    public void DefaultDate_ShouldBeDateTimeMinValueAsString()
+    {
+        // Arrange
+        var forecast = new WeatherForecastEntity();
+
+        // Assert
+        Assert.AreEqual(DateTime.MinValue.ToString(), forecast.Date);
+    }
 }

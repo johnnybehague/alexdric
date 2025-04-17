@@ -1,4 +1,5 @@
-﻿using Alexdric.Sample.Application.DTOs;
+﻿using Alexdric.Application.DTOs;
+using Alexdric.Sample.Application.DTOs;
 
 namespace Alexdric.Sample.Tests.Application.DTOs;
 
@@ -68,5 +69,15 @@ public class WeatherForecastDtoTests
 
         // Act & Assert
         Assert.IsNull(forecast.Summary);
+    }
+
+    [TestMethod]
+    public void WeatherForecastDto_ShouldImplementIDto()
+    {
+        // Arrange
+        var dto = new WeatherForecastDto();
+
+        // Assert
+        Assert.IsInstanceOfType(dto, typeof(IDto));
     }
 }
