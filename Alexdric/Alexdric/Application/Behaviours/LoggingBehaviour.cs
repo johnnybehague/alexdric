@@ -15,9 +15,9 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Clean Architecture Request Handling: { name } {@request }", typeof(TRequest).Name, JsonSerializer.Serialize(request));
+        _logger.LogInformation("Clean Architecture Request Handling: {name} {@request}", typeof(TRequest).Name, JsonSerializer.Serialize(request));
         var response = await next(cancellationToken);
-        _logger.LogInformation("Clean Architecture Response Handling: { name } {@response }", typeof(TResponse).Name, JsonSerializer.Serialize(response));
+        _logger.LogInformation("Clean Architecture Response Handling: {name } {@response}", typeof(TResponse).Name, JsonSerializer.Serialize(response));
 
         return response;
     }
