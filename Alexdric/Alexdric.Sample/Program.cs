@@ -6,6 +6,8 @@ using Alexdric.Sample.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Alexdric.Application.Behaviours;
 
+namespace Alexdric.Sample;
+
 public class Program
 {
     private static void Main(string[] args)
