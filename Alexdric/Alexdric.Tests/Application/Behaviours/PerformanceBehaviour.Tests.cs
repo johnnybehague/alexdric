@@ -25,7 +25,7 @@ public class PerformanceBehaviourTests
     public void Constructor_ShouldReturnsNewPerformanceBehaviour_WhenLoggerIsNotNull()
     {
         // Arrange
-        var loggerMock = new Mock<ILogger<TestRequest>>();
+        var loggerMock = new Mock<ILogger<PerformanceBehaviour<TestRequest, TestResponse>>>();
 
         // Act + Assert
         var behaviour = new PerformanceBehaviour<TestRequest, TestResponse>(loggerMock.Object);
@@ -38,7 +38,7 @@ public class PerformanceBehaviourTests
     public void Constructor_ShouldThrowArgumentNullException_WhenLoggerIsNull()
     {
         // Arrange
-        ILogger<TestRequest> nullLogger = null;
+        ILogger<PerformanceBehaviour<TestRequest, TestResponse>> nullLogger = null;
 
         // Act
         var behaviour = new PerformanceBehaviour<TestRequest, TestResponse>(nullLogger);
@@ -54,7 +54,7 @@ public class PerformanceBehaviourTests
     public async Task Handle_ShouldReturnsResponse()
     {
         // Arrange
-        var loggerMock = new Mock<ILogger<TestRequest>>();
+        var loggerMock = new Mock<ILogger<PerformanceBehaviour<TestRequest, TestResponse>>>();
         var behaviour = new PerformanceBehaviour<TestRequest, TestResponse>(loggerMock.Object);
 
         var request = new TestRequest { Message = "Hello" };
@@ -74,7 +74,7 @@ public class PerformanceBehaviourTests
     public async Task Handle_ShouldNotLog()
     {
         // Arrange
-        var loggerMock = new Mock<ILogger<TestRequest>>();
+        var loggerMock = new Mock<ILogger<PerformanceBehaviour<TestRequest, TestResponse>>>();
         var behaviour = new PerformanceBehaviour<TestRequest, TestResponse>(loggerMock.Object);
 
         var request = new TestRequest { Message = "Hello" };
@@ -101,7 +101,7 @@ public class PerformanceBehaviourTests
     public async Task Handle_ShouldLogWarning_WhenExecutionIsTooSlow()
     {
         // Arrange
-        var loggerMock = new Mock<ILogger<TestRequest>>();
+        var loggerMock = new Mock<ILogger<PerformanceBehaviour<TestRequest, TestResponse>>>();
         var behaviour = new PerformanceBehaviour<TestRequest, TestResponse>(loggerMock.Object);
 
         var request = new TestRequest { Message = "Hello" };
