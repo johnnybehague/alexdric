@@ -12,14 +12,14 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
     public PerformanceBehaviour(ILogger<TRequest> logger)
     {
-        _timer = new Stopwatch() ?? throw new ArgumentNullException(nameof(Stopwatch));
+        _timer = new Stopwatch();
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _timer.Start();
-        var response = await next();
+        var response = await next(cancellationToken);
         _timer.Stop();
 
         var elapsedMilliseconds = _timer.ElapsedMilliseconds;
