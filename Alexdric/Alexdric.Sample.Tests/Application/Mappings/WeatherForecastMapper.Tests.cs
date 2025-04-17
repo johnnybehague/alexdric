@@ -1,10 +1,10 @@
 ﻿using Alexdric.Sample.Application.DTOs;
-using Alexdric.Sample.Application.Mappings;
+using Alexdric.Sample.Application.Mappers;
 using Alexdric.Sample.Domain.Entities;
 using AutoMapper;
 using System.Globalization;
 
-namespace Alexdric.Sample.Tests.Application.Mappings;
+namespace Alexdric.Sample.Tests.Application.Mappers;
 
 [TestClass]
 public class WeatherForecastMapperTests

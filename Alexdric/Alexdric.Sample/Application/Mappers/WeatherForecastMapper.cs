@@ -5,7 +5,7 @@ using Alexdric.Sample.Application.DTOs;
 using Alexdric.Sample.Domain.Entities;
 using AutoMapper;
 
-namespace Alexdric.Sample.Application.Mappings;
+namespace Alexdric.Sample.Application.Mappers;
 
 public class WeatherForecastMapper : BaseMapper<WeatherForecastEntity, WeatherForecastDto>
 {
