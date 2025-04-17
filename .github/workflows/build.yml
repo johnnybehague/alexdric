@@ -53,7 +53,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
           /d:sonar.host.url="https://sonarcloud.io" `
           /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml" `
-          /d:sonar.coverage.exclusions="**/Tests/**,**/*.Tests.cs"
+          /d:sonar.exclusions="**/Tests/**,**/*.Tests.cs"
 
       - name: Build
         run: |
