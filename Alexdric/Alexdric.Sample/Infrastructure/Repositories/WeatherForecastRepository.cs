@@ -18,4 +18,10 @@ public class WeatherForecastRepository : IWeatherForecastRepository
     {
         return await _context.WeatherForecasts.ToListAsync();
     }
+
+    public async Task<WeatherForecastEntity> GetByIdWeatherForecastAsync(int id)
+    {
+        var entities = await _context.WeatherForecasts.ToListAsync();
+        return entities.First(x => x.Id == id);
+    }
 }

@@ -9,18 +9,25 @@ namespace Alexdric.Sample.Tests.Infrastructure.Repositories;
 [TestClass]
 public class WeatherForecastRepositoryTests
 {
+    private Mock<DbSet<WeatherForecastEntity>> _mockDbSet = null!;
     private Mock<IAppDbContext> _contextMock = null!;
     private WeatherForecastRepository _repository = null!;
 
     public static Mock<DbSet<T>> CreateMockDbSet<T>(IEnumerable<T> elements) where T : class // A déplacer dans une autre classe de test plus tard
     {
-        var queryable = elements.AsQueryable();
+        var data = elements.AsQueryable();
+        var asyncData = new TestAsyncEnumerable<T>(data);
 
         var mockSet = new Mock<DbSet<T>>();
-        mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryable.Provider);
-        mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryable.Expression);
-        mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-        mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
+
+        mockSet.As<IAsyncEnumerable<T>>()
+            .Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
+            .Returns(new TestAsyncEnumerator<T>(data.GetEnumerator()));
+
+        mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(asyncData.Provider);
+        mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
+        mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
+        mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
 
         return mockSet;
     }
@@ -28,7 +35,9 @@ public class WeatherForecastRepositoryTests
     [TestInitialize]
     public void Setup()
     {
+        _mockDbSet = new Mock<DbSet<WeatherForecastEntity>>();
         _contextMock = new Mock<IAppDbContext>();
+        _repository = new WeatherForecastRepository(_contextMock.Object);
     }
 
     [TestMethod]
@@ -41,35 +50,80 @@ public class WeatherForecastRepositoryTests
         });
     }
 
-    //[TestMethod]
-    //public async Task GetAllWeatherForecastAsync_ReturnsData()
-    //{
-    //    // Arrange
-    //    var fakeData = new List<WeatherForecastEntity>
-    //        {
-    //            new WeatherForecastEntity { Id = 1, Date = "16/04/2025", Temperature = 22, Summary = "Sunny" },
-    //            new WeatherForecastEntity { Id = 2, Date = "17/04/2025", Temperature = 18, Summary = "Cloudy" }
-    //    };
+    #region GetAllWeatherForecastAsync Tests
 
-    //    // var mockDbSet = CreateMockDbSet(fakeData);
-    //    var mockDbSet = new Mock<DbSet<WeatherForecastEntity>>();
-    //    //mockDbSet.As<IQueryable<WeatherForecastEntity>>().Setup(m => m.Provider).Returns(fakeData.Provider);
-    //    //mockDbSet.As<IQueryable<WeatherForecastEntity>>().Setup(m => m.Expression).Returns(fakeData.Expression);
-    //    //mockDbSet.As<IQueryable<WeatherForecastEntity>>().Setup(m => m.ElementType).Returns(fakeData.ElementType);
-    //    mockDbSet.As<IQueryable<WeatherForecastEntity>>().Setup(m => m.GetEnumerator()).Returns(fakeData.GetEnumerator());
+    [TestMethod]
+    public async Task GetAllWeatherForecastAsync_ReturnsData()
+    {
+        // Arrange
+        var data = new List<WeatherForecastEntity>
+        {
+                new WeatherForecastEntity { Id = 1, Date = "16/04/2025", Temperature = 22, Summary = "Sunny" },
+                new WeatherForecastEntity { Id = 2, Date = "17/04/2025", Temperature = 18, Summary = "Cloudy" }
+        };
+        var mockDbSet = CreateMockDbSet(data);
+        _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
 
-    //    _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
+        // Act
+        var result = await _repository.GetAllWeatherForecastAsync();
 
-    //    _repository = new WeatherForecastRepository(_contextMock.Object);
+        // Assert
+        Assert.IsNotNull(result);
+        var list = result.ToList();
+        Assert.AreEqual(2, list.Count);
+        Assert.AreEqual("Sunny", list[0].Summary);
+        _contextMock.Verify(c => c.WeatherForecasts, Times.Once);
+    }
 
-    //    // Act
-    //    var result = await _repository.GetAllWeatherForecastAsync();
+    [TestMethod]
+    public async Task GetAllWeatherForecastAsync_ShouldReturnEmptyList_WhenNoData()
+    {
+        // Arrange
+        var data = Enumerable.Empty<WeatherForecastEntity>();
+        var mockDbSet = CreateMockDbSet(data);
+        _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
 
-    //    // Assert
-    //    Assert.IsNotNull(result);
-    //    var list = result.ToList();
-    //    Assert.AreEqual(2, list.Count);
-    //    Assert.AreEqual("Sunny", list[0].Summary);
-    //    _contextMock.Verify(c => c.WeatherForecasts, Times.Once);
-    //}
+        // Act
+        var result = await _repository.GetAllWeatherForecastAsync();
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(0, result.Count());
+    }
+
+    #endregion
+
+    #region GetByIdWeatherForecastAsync Tests
+
+    [TestMethod]
+    public async Task GetByIdWeatherForecastAsync_ShouldReturnEntity_WhenFound()
+    {
+        // Arrange
+        var weatherForecast = new WeatherForecastEntity { Id = 1, Summary = "Sunny", Temperature = 25 };
+        var data = new List<WeatherForecastEntity> { weatherForecast };
+        var mockDbSet = CreateMockDbSet(data);
+        _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
+
+        // Act
+        var result = await _repository.GetByIdWeatherForecastAsync(1);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(weatherForecast.Id, result.Id);
+        Assert.AreEqual(weatherForecast.Summary, result.Summary);
+    }
+
+    [TestMethod]
+    public async Task GetByIdWeatherForecastAsync_ShouldThrowException_WhenNotFound()
+    {
+        // Arrange
+        var data = Enumerable.Empty<WeatherForecastEntity>();
+        var mockDbSet = CreateMockDbSet(data);
+        _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
+
+        // Act & Assert
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await _repository.GetByIdWeatherForecastAsync(1));
+    }
+
+    #endregion
 }

@@ -1,4 +1,5 @@
 using Alexdric.Sample.Application.Queries.WeatherForecasts.GetAllWeatherForecast;
+using Alexdric.Sample.Application.Queries.WeatherForecasts.GetByIdWeatherForecast;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,18 @@ public class WeatherForecastController : ControllerBase
     public async Task<IActionResult> GetAllAsync()
     {
         var response = await _mediator.Send(new GetAllWeatherForecastQuery());
+        if (response.Succcess)
+        {
+            return Ok(response);
+        }
+
+        return BadRequest(response);
+    }
+
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        var response = await _mediator.Send(new GetByIdWeatherForecastQuery() { Id = id });
         if (response.Succcess)
         {
             return Ok(response);
