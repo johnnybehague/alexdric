@@ -10,6 +10,7 @@ public class TestAsyncEnumerator<T> : IAsyncEnumerator<T>
     public ValueTask DisposeAsync()
     {
         _inner.Dispose();
+        GC.SuppressFinalize(this);
         return ValueTask.CompletedTask;
     }
 
