@@ -10,6 +10,10 @@ namespace Alexdric.Sample;
 
 public class Program
 {
+    private Program()
+    {
+    }
+
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
