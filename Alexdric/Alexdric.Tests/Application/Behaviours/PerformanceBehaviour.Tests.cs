@@ -110,7 +110,7 @@ public class PerformanceBehaviourTests
         var nextMock = new Mock<RequestHandlerDelegate<TestResponse>>();
         nextMock.Setup(x => x(It.IsAny<CancellationToken>())).Returns(async () =>
         {
-            await Task.Delay(15); // Simule un traitement "lent"
+            await Task.Delay(100); // Simule un traitement "lent"
             return response;
         });
 
