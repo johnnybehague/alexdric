@@ -46,20 +46,13 @@ public class WeatherForecastController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> CreateAsync(WeatherForecastDto dto)
     {
-        try
+        var command = new CreateWeatherForecastCommand() { Dto = dto };
+        var response = await _mediator.Send(command);
+        if (response.Succcess)
         {
-            var command = new CreateWeatherForecastCommand() { Dto = dto };
-            var response = await _mediator.Send(command);
-            if (response.Succcess)
-            {
-                return Ok(response);
-            }
+            return Ok(response);
+        }
 
-            return BadRequest(response);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        return BadRequest(response);
     }
 }
