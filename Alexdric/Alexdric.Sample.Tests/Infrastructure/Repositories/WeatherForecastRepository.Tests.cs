@@ -126,4 +126,52 @@ public class WeatherForecastRepositoryTests
     }
 
     #endregion
+
+    #region CreateAsync Tests
+
+    [TestMethod]
+    public async Task CreateAsync_ShouldReturnAdded_WhenSaveChangesReturnsPositive()
+    {
+        // Arrange
+        var entity = new WeatherForecastEntity() { Id = 1};
+        var data = Enumerable.Empty<WeatherForecastEntity>();
+        var mockDbSet = CreateMockDbSet(data);
+        _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
+
+        mockDbSet.Setup(d => d.AddAsync(entity, It.IsAny<CancellationToken>()))
+                  .ReturnsAsync((Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<WeatherForecastEntity>)null); // Not used
+
+        _contextMock.Setup(c => c.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
+
+        // Act
+        var result = await _repository.CreateAsync(entity);
+
+        // Assert
+        Assert.AreEqual(EntityState.Added, result);
+        mockDbSet.Verify(d => d.AddAsync(entity, It.IsAny<CancellationToken>()), Times.Once);
+        _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task CreateAsync_ShouldReturnUnchanged_WhenSaveChangesReturnsZero()
+    {
+        // Arrange
+        var entity = new WeatherForecastEntity() { Id = 1 };
+        var data = Enumerable.Empty<WeatherForecastEntity>();
+        var mockDbSet = CreateMockDbSet(data);
+
+        _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
+        mockDbSet.Setup(d => d.AddAsync(entity, It.IsAny<CancellationToken>()))
+                  .ReturnsAsync((Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<WeatherForecastEntity>)null);
+
+        _contextMock.Setup(c => c.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(0);
+
+        // Act
+        var result = await _repository.CreateAsync(entity);
+
+        // Assert
+        Assert.AreEqual(EntityState.Unchanged, result);
+    }
+
+    #endregion
 }
