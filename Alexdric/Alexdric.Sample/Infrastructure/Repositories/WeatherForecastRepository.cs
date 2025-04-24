@@ -24,4 +24,11 @@ public class WeatherForecastRepository : IWeatherForecastRepository
         var entities = await _context.WeatherForecasts.ToListAsync();
         return entities.First(x => x.Id == id);
     }
+
+    public async Task<EntityState> CreateAsync(WeatherForecastEntity entity)
+    {
+        await _context.WeatherForecasts.AddAsync(entity);
+        var result = await _context.SaveChangesAsync(CancellationToken.None);
+        return result > 0 ? EntityState.Added : EntityState.Unchanged;
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
 using Alexdric.Application.Mappers;
+using Alexdric.Sample.Application.Commands.WeatherForecasts.CreateWeatherForecast;
 using Alexdric.Sample.Application.DTOs;
 using Alexdric.Sample.Domain.Entities;
 using AutoMapper;
@@ -18,6 +19,8 @@ public class WeatherForecastMapper : BaseMapper<WeatherForecastEntity, WeatherFo
         CreateMap<WeatherForecastDto, WeatherForecastEntity>()
             .ForMember(entity => entity.Temperature, dto => dto.MapFrom(x => x.TemperatureC))
             .ForMember(entity => entity.Date, dto => dto.MapFrom(x => x.Date.ToString(new CultureInfo("fr-FR"))));
+
+        CreateMap<CreateWeatherForecastCommand, WeatherForecastEntity>();
     }
 
     public static DateOnly MapDateOnly(string date)

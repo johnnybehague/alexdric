@@ -1,5 +1,8 @@
+using Alexdric.Sample.Application.Commands.WeatherForecasts.CreateWeatherForecast;
+using Alexdric.Sample.Application.DTOs;
 using Alexdric.Sample.Application.Queries.WeatherForecasts.GetAllWeatherForecast;
 using Alexdric.Sample.Application.Queries.WeatherForecasts.GetByIdWeatherForecast;
+using Alexdric.Sample.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,5 +41,25 @@ public class WeatherForecastController : ControllerBase
         }
 
         return BadRequest(response);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> CreateAsync(WeatherForecastEntity entity)
+    {
+        try
+        {
+            var command = new CreateWeatherForecastCommand() { Entity = entity };
+            var response = await _mediator.Send(command);
+            if (response.Succcess)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 }
