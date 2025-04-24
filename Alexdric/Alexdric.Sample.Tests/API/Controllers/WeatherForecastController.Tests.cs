@@ -1,9 +1,11 @@
 ﻿using Alexdric.Application.Common;
 using Alexdric.Sample.API.Controllers;
+using Alexdric.Sample.Application.Commands.WeatherForecasts.CreateWeatherForecast;
 using Alexdric.Sample.Application.DTOs;
 using Alexdric.Sample.Application.Queries.WeatherForecasts.GetAllWeatherForecast;
 using Alexdric.Sample.Application.Queries.WeatherForecasts.GetByIdWeatherForecast;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -134,6 +136,72 @@ public class WeatherForecastControllerTests
         Assert.IsNotNull(badRequestResult);
         Assert.AreEqual(400, badRequestResult.StatusCode);
         Assert.AreEqual(expectedResponse, badRequestResult.Value);
+    }
+
+    #endregion
+
+    #region CreateAsync Tests
+
+    [TestMethod]
+    public async Task CreateAsync_ShouldReturnOk_WhenSuccessIsTrue()
+    {
+        // Arrange
+        var dto = new WeatherForecastDto();
+        var expectedResponse = new BaseResponse<bool> { Succcess = true };
+
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<CreateWeatherForecastCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _controller.CreateAsync(dto);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
+        Assert.AreEqual(expectedResponse, okResult.Value);
+    }
+
+    [TestMethod]
+    public async Task CreateAsync_ShouldReturnBadRequest_WhenSuccessIsFalse()
+    {
+        // Arrange
+        var dto = new WeatherForecastDto();
+        var expectedResponse = new BaseResponse<bool> { Succcess = false };
+
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<CreateWeatherForecastCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _controller.CreateAsync(dto);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+        var badRequestResult = result as BadRequestObjectResult;
+        Assert.IsNotNull(badRequestResult);
+        Assert.AreEqual(expectedResponse, badRequestResult.Value);
+    }
+
+    [TestMethod]
+    public async Task CreateAsync_ShouldCallMediatorSend_WithCorrectCommand()
+    {
+        // Arrange
+        var dto = new WeatherForecastDto();
+        CreateWeatherForecastCommand capturedCommand = null;
+
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<CreateWeatherForecastCommand>(), It.IsAny<CancellationToken>()))
+            .Callback<object, CancellationToken>((cmd, token) => capturedCommand = (CreateWeatherForecastCommand)cmd)
+            .ReturnsAsync(new BaseResponse<bool> { Succcess = true });
+
+        // Act
+        await _controller.CreateAsync(dto);
+
+        // Assert
+        Assert.IsNotNull(capturedCommand);
+        Assert.AreEqual(dto, capturedCommand.Dto);
     }
 
     #endregion
