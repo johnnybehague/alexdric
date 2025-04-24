@@ -1,5 +1,6 @@
 ﻿using Alexdric.Application.Common;
 using Alexdric.Sample.Application.Commands.WeatherForecasts.CreateWeatherForecast;
+using Alexdric.Sample.Application.DTOs;
 using Alexdric.Sample.Domain.Entities;
 using MediatR;
 
@@ -14,14 +15,14 @@ public class CreateWeatherForecastCommandTests
         // Arrange
         var command = new CreateWeatherForecastCommand 
         {
-            Entity = new WeatherForecastEntity
+            Dto = new WeatherForecastDto
             {
                 Id = 1
             }
         };
 
         // Act & Assert
-        Assert.AreEqual(1, command.Entity.Id);
+        Assert.AreEqual(1, command.Dto.Id);
     }
 
     [TestMethod]

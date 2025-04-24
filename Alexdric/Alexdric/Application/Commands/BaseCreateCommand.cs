@@ -1,11 +1,11 @@
 ﻿using Alexdric.Application.Common;
-using Alexdric.Domain.Entities;
+using Alexdric.Application.DTOs;
 using MediatR;
 
 namespace Alexdric.Application.Commands;
 
-public class BaseCreateCommand<TEntity> : IRequest<BaseResponse<bool>>
-    where TEntity : IEntity
+public class BaseCreateCommand<TDto> : IRequest<BaseResponse<bool>>
+    where TDto : IDto
 {
-    public TEntity Entity { get; set; }
+    public TDto Dto { get; set; }
 }

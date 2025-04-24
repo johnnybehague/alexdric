@@ -1,4 +1,5 @@
 ﻿using Alexdric.Application.Common;
+using Alexdric.Application.DTOs;
 using Alexdric.Domain.Entities;
 using Alexdric.Domain.Repositories;
 using AutoMapper;
@@ -7,25 +8,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Alexdric.Application.Commands;
 
-public class BaseCreateCommandHandler<TEntity, TRepository> // : IRequestHandler<BaseCreateCommand<TEntity>, BaseResponse<bool>>
+public class BaseCreateCommandHandler<TEntity, TDto> // : IRequestHandler<BaseCreateCommand<TEntity>, BaseResponse<bool>>
     where TEntity : IEntity
-    where TRepository : ICreateRepository<TEntity>
+    where TDto : IDto
 {
     private readonly IMapper _mapper;
-    private readonly TRepository _repository;
+    private readonly ICreateRepository<TEntity> _repository;
 
-    public BaseCreateCommandHandler(TRepository repository, IMapper mapper)
+    public BaseCreateCommandHandler(ICreateRepository<TEntity> repository, IMapper mapper)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<BaseResponse<bool>> Handle(BaseCreateCommand<TEntity> command, CancellationToken cancellationToken)
+    public async Task<BaseResponse<bool>> Handle(BaseCreateCommand<TDto> command, CancellationToken cancellationToken)
     {
         var response = new BaseResponse<bool>();
         try
         {
-            var entity = _mapper.Map<TEntity>(command.Entity);
+            var entity = _mapper.Map<TEntity>(command.Dto);
             response.Data = await CreateAsync(entity);
 
             if (response.Data)

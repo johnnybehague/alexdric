@@ -6,7 +6,7 @@ public class CreateWeatherForecastCommandValidator : AbstractValidator<CreateWea
 {
     public CreateWeatherForecastCommandValidator()
     {
-        RuleFor(x => x.Entity.Id).NotEmpty().NotNull();
-        RuleFor(x => x.Entity.Date).NotEmpty().NotNull();
+        RuleFor(x => x.Dto.Id).NotEmpty().NotNull();
+        RuleFor(x => x.Dto.Date).NotEmpty().NotNull();
     }
 }

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Alexdric.Sample.Domain.Repositories;
 using Alexdric.Application.Commands;
+using Alexdric.Sample.Application.DTOs;
+using Alexdric.Application.DTOs;
 
 namespace Alexdric.Sample.Tests.Application.Commands.CreateWeatherForecast;
 
@@ -27,16 +29,21 @@ public class CreateWeatherForecastCommandHandlerTests
     public async Task Handle_Should_Return_Success_When_WeatherForecast_Created_Successfully()
     {
         // Arrange
-        var command = new BaseCreateCommand<WeatherForecastEntity>
+        var command = new BaseCreateCommand<WeatherForecastDto>
         {
-            Entity = new WeatherForecastEntity
+            Dto = new WeatherForecastDto
             {
                 Id = 1
             }
         };
 
+        var entity = new WeatherForecastEntity
+        {
+            Id = 1
+        };
+
         // Mock du mapper pour transformer la commande en entité
-        _mapperMock.Setup(m => m.Map<WeatherForecastEntity>(command)).Returns(command.Entity);
+        _mapperMock.Setup(m => m.Map<WeatherForecastEntity>(command.Dto)).Returns(entity);
 
         // Mock de la méthode CreateAsync du repository
         _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>())).ReturnsAsync(EntityState.Added);
@@ -50,7 +57,7 @@ public class CreateWeatherForecastCommandHandlerTests
         Assert.AreEqual("Create succeed!", result.Message);
         Assert.IsTrue(result.Data);
 
-        _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command), Times.Once);
+        _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command.Dto), Times.Once);
         _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>()), Times.Once);
     }
 
@@ -58,19 +65,28 @@ public class CreateWeatherForecastCommandHandlerTests
     public async Task Handle_Should_Return_Failure_When_WeatherForecast_Creation_Fails()
     {
         // Arrange
-        var command = new BaseCreateCommand<WeatherForecastEntity>
+        var command = new BaseCreateCommand<WeatherForecastDto>
         {
-            Entity = new WeatherForecastEntity
+            Dto = new WeatherForecastDto
             {
                 Id = 1,
-                Date = "2025-04-18",
-                Temperature = 20,
+                Date = new DateOnly(2025, 4, 18),
+                TemperatureC = 20,
                 Summary = "Sunny"
             }
         };
 
+        var entity = new WeatherForecastEntity
+        {
+            Id = 1,
+            Date = "2025-04-18",
+            Temperature = 20,
+            Summary = "Sunny"
+        };
+
+
         // Mock du mapper pour transformer la commande en entité
-        _mapperMock.Setup(m => m.Map<WeatherForecastEntity>(command)).Returns(command.Entity);
+        _mapperMock.Setup(m => m.Map<WeatherForecastEntity>(command)).Returns(entity);
 
         // Mock de la méthode CreateAsync du repository
         _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>())).ReturnsAsync(EntityState.Detached); // Simulation de l'échec
@@ -84,7 +100,7 @@ public class CreateWeatherForecastCommandHandlerTests
         // Assert.AreEqual("Create failed.", result.Message);
         Assert.IsFalse(result.Data);
 
-        _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command), Times.Once);
+        _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command.Dto), Times.Once);
         _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>()), Times.Once);
     }
 
@@ -92,19 +108,27 @@ public class CreateWeatherForecastCommandHandlerTests
     public async Task Handle_Should_Return_Failure_When_Exception_Is_Thrown()
     {
         // Arrange
-        var command = new BaseCreateCommand<WeatherForecastEntity>
+        var command = new BaseCreateCommand<WeatherForecastDto>
         {
-            Entity = new WeatherForecastEntity
+            Dto = new WeatherForecastDto
             {
                 Id = 1,
-                Date = "2025-04-18",
-                Temperature = 20,
+                Date = new DateOnly(2025, 4, 18),
+                TemperatureC = 20,
                 Summary = "Sunny"
             }
         };
 
+        var entity = new WeatherForecastEntity
+        {
+            Id = 1,
+            Date = "2025-04-18",
+            Temperature = 20,
+            Summary = "Sunny"
+        };
+
         // Mock du mapper pour transformer la commande en entité
-        _mapperMock.Setup(m => m.Map<WeatherForecastEntity>(command)).Returns(command.Entity);
+        _mapperMock.Setup(m => m.Map<WeatherForecastEntity>(command.Dto)).Returns(entity);
 
         // Mock de la méthode CreateAsync du repository pour lancer une exception
         _repositoryMock.Setup(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>())).ThrowsAsync(new Exception("Database error"));
@@ -118,7 +142,7 @@ public class CreateWeatherForecastCommandHandlerTests
         Assert.AreEqual("Database error", result.Message);
         Assert.IsFalse(result.Data);
 
-        _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command), Times.Once);
+        _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command.Dto), Times.Once);
         _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>()), Times.Once);
     }
 
