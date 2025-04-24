@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Application\Services\" />
     <Folder Include="Domain\Events\" />
+    <Folder Include="Infrastructure\Contexts\" />
   </ItemGroup>
 
   <ItemGroup>
