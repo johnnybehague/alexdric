@@ -6,10 +6,12 @@ using Moq;
 using Alexdric.Sample.Domain.Repositories;
 using Alexdric.Application.Commands;
 using Alexdric.Sample.Application.DTOs;
-using Alexdric.Application.DTOs;
 
 namespace Alexdric.Sample.Tests.Application.Commands.CreateWeatherForecast;
 
+/// <summary>
+/// Tests de la classe CreateWeatherForecastCommandHandler
+/// </summary>
 [TestClass]
 public class CreateWeatherForecastCommandHandlerTests 
 {
@@ -17,6 +19,9 @@ public class CreateWeatherForecastCommandHandlerTests
     private Mock<IMapper> _mapperMock;
     private CreateWeatherForecastCommandHandler _handler;
 
+    /// <summary>
+    /// Setup differents mocks of the Test class
+    /// </summary>
     [TestInitialize]
     public void Setup()
     {
@@ -25,6 +30,10 @@ public class CreateWeatherForecastCommandHandlerTests
         _handler = new CreateWeatherForecastCommandHandler(_repositoryMock.Object, _mapperMock.Object);
     }
 
+    /// <summary>
+    /// The handler should return Success when the WeatherForecast is created successfuly
+    /// </summary>
+    /// <returns>Task</returns>
     [TestMethod]
     public async Task Handle_Should_Return_Success_When_WeatherForecast_Created_Successfully()
     {
@@ -61,6 +70,10 @@ public class CreateWeatherForecastCommandHandlerTests
         _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>()), Times.Once);
     }
 
+    /// <summary>
+    /// The handler should return Failure when the WeatherForecast creation failed
+    /// </summary>
+    /// <returns>Task</returns>
     [TestMethod]
     public async Task Handle_Should_Return_Failure_When_WeatherForecast_Creation_Fails()
     {
@@ -97,13 +110,16 @@ public class CreateWeatherForecastCommandHandlerTests
         // Assert
         Assert.IsNotNull(result);
         Assert.IsFalse(result.Succcess);
-        // Assert.AreEqual("Create failed.", result.Message);
         Assert.IsFalse(result.Data);
 
         _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command.Dto), Times.Once);
         _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>()), Times.Once);
     }
 
+    /// <summary>
+    /// The handler should return failure when an exception is thrown
+    /// </summary>
+    /// <returns>Task</returns>
     [TestMethod]
     public async Task Handle_Should_Return_Failure_When_Exception_Is_Thrown()
     {
@@ -145,5 +161,4 @@ public class CreateWeatherForecastCommandHandlerTests
         _mapperMock.Verify(m => m.Map<WeatherForecastEntity>(command.Dto), Times.Once);
         _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<WeatherForecastEntity>()), Times.Once);
     }
-
 }

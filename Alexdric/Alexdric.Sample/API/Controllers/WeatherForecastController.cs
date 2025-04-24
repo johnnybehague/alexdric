@@ -43,6 +43,11 @@ public class WeatherForecastController : ControllerBase
         return BadRequest(response);
     }
 
+    /// <summary>
+    /// PUT : Create a new WeatherForecast
+    /// </summary>
+    /// <param name="dto">DTO to create</param>
+    /// <returns>ActionResult of the result</returns>
     [HttpPut]
     public async Task<IActionResult> CreateAsync(WeatherForecastDto dto)
     {
