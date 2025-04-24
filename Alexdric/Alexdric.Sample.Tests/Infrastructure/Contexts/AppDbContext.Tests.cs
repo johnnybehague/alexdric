@@ -47,7 +47,7 @@ public class AppDbContextTests
     }
 
     [TestMethod]
-    public async Task WeatherForecasts_DbSet_ShouldBeAccessible()
+    public void WeatherForecasts_DbSet_ShouldBeAccessible()
     {
         // Arrange & Act
         using (var context = new AppDbContext(_dbContextOptions))
