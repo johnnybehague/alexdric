@@ -31,7 +31,10 @@ public class BaseCreateCommandTests
     public void Command_ShouldImplementIRequest()
     {
         // Arrange
-        var command = new BaseCreateCommand<TestDto>();
+        var command = new BaseCreateCommand<TestDto>
+        {
+            Dto = new TestDto { Id = 1 }
+        };
 
         // Act & Assert
         Assert.IsInstanceOfType(command, typeof(IRequest<BaseResponse<bool>>));

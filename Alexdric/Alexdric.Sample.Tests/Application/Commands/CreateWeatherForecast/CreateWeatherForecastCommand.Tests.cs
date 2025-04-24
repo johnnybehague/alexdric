@@ -29,7 +29,13 @@ public class CreateWeatherForecastCommandTests
     public void Command_ShouldImplementIRequest()
     {
         // Arrange
-        var query = new CreateWeatherForecastCommand();
+        var query = new CreateWeatherForecastCommand
+        {
+            Dto = new WeatherForecastDto
+            {
+                Id = 1
+            }
+        };
 
         // Act & Assert
         Assert.IsInstanceOfType(query, typeof(IRequest<BaseResponse<bool>>));
