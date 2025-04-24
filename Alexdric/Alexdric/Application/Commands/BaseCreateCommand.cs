@@ -7,5 +7,5 @@ namespace Alexdric.Application.Commands;
 public class BaseCreateCommand<TDto> : IRequest<BaseResponse<bool>>
     where TDto : IDto
 {
-    public TDto Dto { get; set; }
+    public required TDto Dto { get; set; }
 }

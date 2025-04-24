@@ -57,9 +57,9 @@ public class WeatherForecastController : ControllerBase
 
             return BadRequest(response);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw ex;
+            throw;
         }
     }
 }

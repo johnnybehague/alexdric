@@ -4,9 +4,6 @@ using Alexdric.Sample.Domain.Repositories;
 using Alexdric.Sample.Infrastructure.Contexts;
 using Alexdric.Sample.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Alexdric.Application.Behaviours;
-using System.Net;
-using MediatR;
 
 namespace Alexdric.Sample;
 
@@ -28,7 +25,6 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        //builder.Services.AddBehaviours();
         builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<IAppDbContext, AppDbContext>();
         builder.Services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();

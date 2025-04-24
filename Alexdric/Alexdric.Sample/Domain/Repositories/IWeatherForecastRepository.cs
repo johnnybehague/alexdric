@@ -8,6 +8,4 @@ public interface IWeatherForecastRepository : ICreateRepository<WeatherForecastE
     Task<IEnumerable<WeatherForecastEntity>> GetAllWeatherForecastAsync();
 
     Task<WeatherForecastEntity> GetByIdWeatherForecastAsync(int id);
-
-    // Task<EntityState> CreateWeatherForecastAsync(WeatherForecastEntity weatherForecast);
 }
