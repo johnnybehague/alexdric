@@ -26,11 +26,8 @@ public class BaseGetAllQueryHandler<TEntity, TDto>
     /// <exception cref="ArgumentNullException"></exception>
     public BaseGetAllQueryHandler(IQueryRepository<TEntity> repository, IMapper mapper)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        
-        if(mapper == null)
-            throw new ArgumentNullException(nameof(mapper));
-
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));       
+        ArgumentNullException.ThrowIfNull(mapper);
         _formatter = new BaseQueryFormatter<TEntity, TDto>(mapper);
     }
 

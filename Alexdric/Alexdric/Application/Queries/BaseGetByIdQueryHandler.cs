@@ -25,10 +25,7 @@ public class BaseGetByIdQueryHandler<TEntity, TDto>
     public BaseGetByIdQueryHandler(IQueryRepository<TEntity> repository, IMapper mapper)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-
-        if (mapper == null)
-            throw new ArgumentNullException(nameof(mapper));
-
+        ArgumentNullException.ThrowIfNull(mapper);
         _formatter = new BaseQueryFormatter<TEntity, TDto>(mapper);
     }
 
