@@ -28,5 +28,5 @@ public class CreateWeatherForecastCommandHandler : BaseCreateCommandHandler<Weat
     /// <param name="cancellationToken">CancellationToken</param>
     /// <returns>Result of the Creation</returns>
     public async Task<BaseResponse<bool>> Handle(CreateWeatherForecastCommand command, CancellationToken cancellationToken)
-        => await base.Handle((BaseCreateCommand<WeatherForecastDto>)command, cancellationToken);
+        => await base.Handle(command, cancellationToken);
 }
