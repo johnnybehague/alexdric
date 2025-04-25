@@ -23,8 +23,6 @@ public class WeatherForecastMapper : BaseMapper<WeatherForecastEntity, WeatherFo
         CreateMap<WeatherForecastDto, WeatherForecastEntity>()
             .ForMember(entity => entity.Temperature, dto => dto.MapFrom(x => x.TemperatureC))
             .ForMember(entity => entity.Date, dto => dto.MapFrom(x => x.Date.ToString(new CultureInfo("fr-FR"))));
-
-        CreateMap<CreateWeatherForecastCommand, WeatherForecastEntity>();
     }
 
     /// <summary>

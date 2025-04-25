@@ -31,7 +31,7 @@ public class GetByIdWeatherForecastQueryHandlerTests
         var dto = new WeatherForecastDto { Id = 1, Summary = "Sunny" };
 
         _repoMock
-            .Setup(r => r.GetByIdWeatherForecastAsync(query.Id))
+            .Setup(r => r.GetByIdAsync(query.Id))
             .ReturnsAsync(entity);
 
         _mapperMock
@@ -54,7 +54,7 @@ public class GetByIdWeatherForecastQueryHandlerTests
         var query = new GetByIdWeatherForecastQuery { Id = 99 };
 
         _repoMock
-            .Setup(r => r.GetByIdWeatherForecastAsync(query.Id))
+            .Setup(r => r.GetByIdAsync(query.Id))
             .ThrowsAsync(new Exception("Test exception"));
 
         // Act
