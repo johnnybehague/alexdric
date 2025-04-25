@@ -8,30 +8,11 @@ using MediatR;
 
 namespace Alexdric.Sample.Application.Queries.WeatherForecasts.GetByIdWeatherForecast;
 
-public class GetByIdWeatherForecastQueryHandler : BaseQueryHandler<WeatherForecastEntity, WeatherForecastDto>,
+public class GetByIdWeatherForecastQueryHandler : BaseGetByIdQueryHandler<WeatherForecastEntity, WeatherForecastDto>,
     IRequestHandler<GetByIdWeatherForecastQuery, BaseResponse<WeatherForecastDto>>
 {
-    private readonly IWeatherForecastRepository _weatherForecastRepository;
-
-    public GetByIdWeatherForecastQueryHandler(IWeatherForecastRepository weatherForecastRepository, IMapper mapper) : base(mapper)
-    {
-        _weatherForecastRepository = weatherForecastRepository ?? throw new ArgumentNullException(nameof(weatherForecastRepository));
-    }
+    public GetByIdWeatherForecastQueryHandler(IWeatherForecastRepository weatherForecastRepository, IMapper mapper) : base(weatherForecastRepository, mapper) { }
 
     public async Task<BaseResponse<WeatherForecastDto>> Handle(GetByIdWeatherForecastQuery request, CancellationToken cancellationToken)
-    {
-        BaseResponse<WeatherForecastDto> response;
-
-        try
-        {
-            var entity = await _weatherForecastRepository.GetByIdWeatherForecastAsync(request.Id);
-            response = GetSuccessResponse(entity);
-        }
-        catch (Exception ex)
-        {
-            response = GetErrorResponse(ex);
-        }
-
-        return response;
-    }
+        => await base.Handle(request, cancellationToken);
 }

@@ -26,7 +26,7 @@ public class WeatherForecastRepository : IWeatherForecastRepository
     /// Get All Weatherforecasts
     /// </summary>
     /// <returns>List of Weatherforecast entities</returns>
-    public async Task<IEnumerable<WeatherForecastEntity>> GetAllWeatherForecastAsync()
+    public async Task<IEnumerable<WeatherForecastEntity>> GetAllAsync()
     {
         return await _context.WeatherForecasts.ToListAsync();
     }
@@ -36,7 +36,7 @@ public class WeatherForecastRepository : IWeatherForecastRepository
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>Weatherforecast with specified id</returns>
-    public async Task<WeatherForecastEntity> GetByIdWeatherForecastAsync(int id)
+    public async Task<WeatherForecastEntity> GetByIdAsync(int id)
     {
         var entities = await _context.WeatherForecasts.ToListAsync();
         return entities.First(x => x.Id == id);

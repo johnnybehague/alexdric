@@ -42,7 +42,7 @@ public class GetAllWeatherForecastQueryHandlerTests
             };
 
         _weatherForecastRepositoryMock
-            .Setup(r => r.GetAllWeatherForecastAsync())
+            .Setup(r => r.GetAllAsync())
             .ReturnsAsync(entities);
 
         _mapperMock
@@ -57,7 +57,7 @@ public class GetAllWeatherForecastQueryHandlerTests
         Assert.IsNotNull(result.Data);
         Assert.AreEqual(1, result.Data.Count());
         Assert.AreEqual("Query succeed!", result.Message);
-        _weatherForecastRepositoryMock.Verify(r => r.GetAllWeatherForecastAsync(), Times.Once);
+        _weatherForecastRepositoryMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     [TestMethod]
@@ -68,7 +68,7 @@ public class GetAllWeatherForecastQueryHandlerTests
         var exceptionMessage = "Database failure";
 
         _weatherForecastRepositoryMock
-            .Setup(r => r.GetAllWeatherForecastAsync())
+            .Setup(r => r.GetAllAsync())
             .ThrowsAsync(new System.Exception(exceptionMessage));
 
         // Act
@@ -79,6 +79,6 @@ public class GetAllWeatherForecastQueryHandlerTests
         Assert.AreEqual(exceptionMessage, result.Message);
         Assert.IsNotNull(result.Errors);
         Assert.AreEqual(1, result.Errors.Count());
-        _weatherForecastRepositoryMock.Verify(r => r.GetAllWeatherForecastAsync(), Times.Once);
+        _weatherForecastRepositoryMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 }

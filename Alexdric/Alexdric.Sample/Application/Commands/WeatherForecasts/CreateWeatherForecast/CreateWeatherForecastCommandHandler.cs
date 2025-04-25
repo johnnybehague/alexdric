@@ -19,11 +19,7 @@ public class CreateWeatherForecastCommandHandler : BaseCreateCommandHandler<Weat
     /// </summary>
     /// <param name="weatherForecastRepository">Repository of WeatherForecast</param>
     /// <param name="mapper">Mapper</param>
-    public CreateWeatherForecastCommandHandler(IWeatherForecastRepository weatherForecastRepository, IMapper mapper)
-        : base(weatherForecastRepository, mapper)
-    {
-
-    }
+    public CreateWeatherForecastCommandHandler(IWeatherForecastRepository weatherForecastRepository, IMapper mapper) : base(weatherForecastRepository, mapper) { }
 
     /// <summary>
     /// Handle the Creation of a new WeatherForecast
@@ -31,8 +27,6 @@ public class CreateWeatherForecastCommandHandler : BaseCreateCommandHandler<Weat
     /// <param name="command">Command to create a WeatherForecast</param>
     /// <param name="cancellationToken">CancellationToken</param>
     /// <returns>Result of the Creation</returns>
-    public Task<BaseResponse<bool>> Handle(CreateWeatherForecastCommand command, CancellationToken cancellationToken)
-    {
-        return this.Handle((BaseCreateCommand<WeatherForecastDto>)command, cancellationToken);
-    }
+    public async Task<BaseResponse<bool>> Handle(CreateWeatherForecastCommand command, CancellationToken cancellationToken)
+        => await base.Handle((BaseCreateCommand<WeatherForecastDto>)command, cancellationToken);
 }

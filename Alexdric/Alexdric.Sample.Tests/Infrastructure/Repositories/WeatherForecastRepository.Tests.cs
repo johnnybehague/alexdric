@@ -65,7 +65,7 @@ public class WeatherForecastRepositoryTests
         _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
 
         // Act
-        var result = await _repository.GetAllWeatherForecastAsync();
+        var result = await _repository.GetAllAsync();
 
         // Assert
         Assert.IsNotNull(result);
@@ -84,7 +84,7 @@ public class WeatherForecastRepositoryTests
         _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
 
         // Act
-        var result = await _repository.GetAllWeatherForecastAsync();
+        var result = await _repository.GetAllAsync();
 
         // Assert
         Assert.IsNotNull(result);
@@ -105,7 +105,7 @@ public class WeatherForecastRepositoryTests
         _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
 
         // Act
-        var result = await _repository.GetByIdWeatherForecastAsync(1);
+        var result = await _repository.GetByIdAsync(1);
 
         // Assert
         Assert.IsNotNull(result);
@@ -122,7 +122,7 @@ public class WeatherForecastRepositoryTests
         _contextMock.Setup(c => c.WeatherForecasts).Returns(mockDbSet.Object);
 
         // Act & Assert
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await _repository.GetByIdWeatherForecastAsync(1));
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await _repository.GetByIdAsync(1));
     }
 
     #endregion
